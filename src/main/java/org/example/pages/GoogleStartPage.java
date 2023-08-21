@@ -18,7 +18,8 @@ public class GoogleStartPage {
     private SelenideElement searchInput = $(byXpath("//textarea[@type='search']"));
     private SelenideElement pageTitle = $(byXpath("//title"));
     private SelenideElement searchButton = $(byXpath("//input[@role='button'][1]"));
-    private SelenideElement acceptCookiesButton = $(byXpath("//button[div[contains(normalize-space(), 'Accept all')]]"));
+    private SelenideElement acceptCookiesButton = $(byXpath("//button[div[contains(normalize-space(), 'Accept all') or contains(normalize-space(), 'Принять все')]]"));
+
     @Step("Open page url")
     public GoogleStartPage openStartPage() {
         open(GOOGLE_START_URL.getData());
@@ -45,8 +46,15 @@ public class GoogleStartPage {
 
     @Step("Check if search tooltip appears after hovering search input")
     public boolean isSearchTooltipPresent() {
-        actions().moveToElement(searchInput).perform();
-        return searchInput.shouldHave(Condition.attribute("title", SEARCH_TOOLTIP_TEXT.getData())).exists();
+        String pageLanguage = $("html").getAttribute("lang");
+
+        if (pageLanguage.startsWith(RUSSIAN.getData())) {
+            return searchInput.shouldHave(Condition.attribute("title", SEARCH_TOOLTIP_RU_TEXT.getData())).exists();
+        } else if (pageLanguage.startsWith(ENGLISH.getData())) {
+            return searchInput.shouldHave(Condition.attribute("title", SEARCH_TOOLTIP_EN_TEXT.getData())).exists();
+        } else {
+            throw new AssertionError("Unsupported page language: " + pageLanguage);
+        }
     }
 
     @Step("Check if user is redirected on start google page")
