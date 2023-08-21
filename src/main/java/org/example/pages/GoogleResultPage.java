@@ -33,6 +33,6 @@ public class GoogleResultPage extends GoogleStartPage {
     @Step("Check if user is redirected to Google start page after clicking left logo on Results page and see no search results")
     public boolean checkLeftGoogleLogoFunctionality() {
         leftGoogleLogo.click();
-        return searchResults.shouldNotBe(Condition.visible).exists() && checkStartPageRedirection();
+        return !searchResults.exists() && checkStartPageRedirection();
     }
 }
