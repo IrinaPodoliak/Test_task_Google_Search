@@ -1,4 +1,4 @@
-# Test_task_google_search
+# Test_task_Google_Search
 Используя: Java, Maven/Gradle, TestNG, нативный Selenium или Selenide
 
 Задание 2:
